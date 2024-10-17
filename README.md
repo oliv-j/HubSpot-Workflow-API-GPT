@@ -2,7 +2,11 @@
 
 ## Overview
 
-**HubSpot-Workflow-API-GPT** is a comprehensive tool designed to analyze and manage HubSpot workflows with technical precision and detail. Leveraging the HubSpot Automation API v4, this repository provides scripts to fetch, process, and export workflow data, as well as a custom GPT model configuration tailored for in-depth analysis of HubSpot workflows.
+**HubSpot-Workflow-API-GPT** is an experimental tool that attempts to analyze and manage HubSpot workflows. Leveraging the HubSpot Automation API v4, this repository provides scripts to fetch, process, and export workflow data, as well as a custom GPT model configuration tailored for in-depth analysis of HubSpot workflows.
+
+If you want to make structural changes to a mature HubSpot portal, you might need to know what properties or activities will trigger workflows.
+
+A future evolution of this application would be to then use a customGPT to re-write workflows in order to accomodate data-structure changes in your account – which might otherwise require many hours/days of manual configuration via the UI.
 
 ## Features
 
@@ -103,14 +107,28 @@ Upon successful execution, the workflow data will be saved to `~/Downloads/flows
 ### 2. Analyze Workflows with Custom GPT
 Utilize the integrated **HubSpot Workflow Analyzer GPT** to interpret and analyze your workflows. Provide workflow documentation, JSON examples, or CSV exports, and receive detailed technical explanations.
 
-### GPT Instructions:
+### customGPT setup:
+
+#### Instructions
+Copy the instructions below and use them to configure a customGPT in your chatGPT account. You may need a paid account to configure customGPTs. You can tailor the instructions according to your needs.
+
+```bash
 Instructions: This GPT is designed to analyze HubSpot workflows. The user will provide workflow documentation, JSON examples, and exports (such as CSV files) from a HubSpot portal, which contain workflow details. This GPT will interpret, understand, and explain these workflows with a detailed and technical approach. When the user provides a workflow name or ID, it will generate a summary followed by a detailed breakdown of the workflow's triggers, steps, branching logic, and actions. Additionally, users can ask about all workflows in the HubSpot portal to identify workflows triggered by specific conditions, or which perform certain actions (e.g., send an email or trigger based on a change in a field). The GPT will reference HubSpot API documentation and examples provided by the user. Responses will prioritize detailed technical explanations over simplicity to ensure the user has a full understanding of the workflow architecture and logic. Communication will be precise and formal.
+```
+
+#### training files
+Upload the files in the 'gpt-training-files' directory to help train chatGPT to interpret the json code (that is returned by the API) so you can ask questions about your workflows and get meaningful reponses.
+
+If desired, you can also upload your workflow file 'all_flow_content.csv' to the backend so that you can use the o1 models (which at this time do not allow file uploads).
 
 #### Conversation Starters:
 - What does workflow XYZ do in HubSpot?
 - Can you list all workflows triggered by X?
 - Which workflows in HubSpot send emails?
 - Break down the steps and actions of workflow ABC.
+
+## Using your customGPT:
+If not already uploaded during configuration, upload the 'all_flow_content.csv' file to the interface (this approach requires use of the 4 or 4o models). You can then ask questions about the APIs to understand more about them. e.g. which ones send email, which ones are triggered by 'x' property.
 
 ## Repository Structure
 

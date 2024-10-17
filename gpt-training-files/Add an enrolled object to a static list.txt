@@ -1,0 +1,11 @@
+// Example action to add an enrolled contact to a list
+{
+  "type": "SINGLE_CONNECTION",
+  "actionId": "4",
+  "actionTypeVersion": 0,
+  "actionTypeId": "0-13",
+  "fields": {
+    "operation": "ADD",
+    "list_id": "178"
+  }
+}

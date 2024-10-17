@@ -1,0 +1,15 @@
+// Example of a delay action to delay for a specific amount of time (e.g., 6 hours)
+ {
+  "type": "SINGLE_CONNECTION",
+  "actionId": "5",
+  "actionTypeVersion": 0,
+  "actionTypeId": "0-35",
+  "connection": {
+    "edgeType": "STANDARD",
+    "nextActionId": "7"
+  },
+  "fields": {
+    "delta": "720",
+    "time_unit": "MINUTES"
+  }
+}

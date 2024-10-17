@@ -1,0 +1,26 @@
+// Example list branch action
+{
+  "actionId": "6",
+  "listBranches": [
+    {
+      "filterBranch": {},
+      "connection": {
+        "edgeType": "STANDARD",
+        "nextActionId": "7"
+      }
+    },
+    {
+      "filterBranch": {},
+      "branchName": "Some branch name",
+      "connection": {
+        "edgeType": "GOTO",
+        "nextActionId": "4"
+      }
+    }
+  ],
+  "defaultBranchName": "Fall-through branch",
+  "defaultBranch": {
+    "edgeType": "STANDARD",
+    "nextActionId": "8"
+  }
+}

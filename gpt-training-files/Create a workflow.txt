@@ -1,0 +1,137 @@
+// Example request body for POST request to create a workflow
+{
+  "isEnabled": true,
+  "flowType": "WORKFLOW",
+  "name": "New form submission from interested contact",
+  "startActionId": "1",
+  "nextAvailableActionId": "4",
+  "actions": [
+    {
+      "type": "SINGLE_CONNECTION",
+      "actionId": "1",
+      "actionTypeVersion": 0,
+      "actionTypeId": "0-14",
+      "connection": {
+        "edgeType": "STANDARD",
+        "nextActionId": "3"
+      },
+      "fields": {
+        "object_type_id": "0-5",
+        "properties": [
+          {
+            "targetProperty": "subject",
+            "value": {
+              "type": "STATIC_VALUE",
+              "staticValue": "Review new form submission"
+            }
+          },
+          {
+            "targetProperty": "hs_pipeline_stage",
+            "value": {
+              "type": "STATIC_VALUE",
+              "staticValue": "1"
+            }
+          },
+          {
+            "targetProperty": "source_type",
+            "value": {
+              "type": "STATIC_VALUE",
+              "staticValue": "FORM"
+            }
+          },
+          {
+            "targetProperty": "content",
+            "value": {
+              "type": "STATIC_VALUE",
+              "staticValue": "[Triage required] new form submitted. Next available rep should review."
+            }
+          }
+        ],
+        "associations": [
+          {
+            "target": {
+              "associationCategory": "HUBSPOT_DEFINED",
+              "associationTypeId": 16
+            },
+            "value": {
+              "type": "ENROLLED_OBJECT"
+            }
+          },
+          {
+            "target": {
+              "associationCategory": "HUBSPOT_DEFINED",
+              "associationTypeId": 339
+            },
+            "value": {
+              "type": "COPY_ASSOCIATION",
+              "sourceSpec": {
+                "associationCategory": "HUBSPOT_DEFINED",
+                "associationTypeId": 279
+              }
+            }
+          }
+        ],
+        "use_explicit_associations": "true"
+      }
+    },
+    {
+      "type": "SINGLE_CONNECTION",
+      "actionId": "2",
+      "actionTypeVersion": 0,
+      "actionTypeId": "0-4",
+      "fields": {
+        "content_id": "113782603056"
+      }
+    },
+    {
+      "type": "SINGLE_CONNECTION",
+      "actionId": "3",
+      "actionTypeVersion": 0,
+      "actionTypeId": "0-1",
+      "connection": {
+        "edgeType": "STANDARD",
+        "nextActionId": "2"
+      },
+      "fields": {
+        "delta": "1440",
+        "time_unit": "MINUTES"
+      }
+    }
+  ],
+  "enrollmentCriteria": {
+    "shouldReEnroll": false,
+    "type": "EVENT_BASED",
+    "eventFilterBranches": [
+      {
+        "filterBranches": [],
+        "filters": [
+          {
+            "property": "hs_form_id",
+            "operation": {
+              "operator": "IS_ANY_OF",
+              "includeObjectsWithNoValueSet": false,
+              "values": [
+                "2f5cc7f8-d359-4e9c-a770-dd42ea07d217"
+              ],
+              "operationType": "ENUMERATION"
+            },
+            "filterType": "PROPERTY"
+          }
+        ],
+        "eventTypeId": "4-1639801",
+        "operator": "HAS_COMPLETED",
+        "filterBranchType": "UNIFIED_EVENTS",
+        "filterBranchOperator": "AND"
+      }
+    ],
+    "listMembershipFilterBranches": []
+  },
+  "timeWindows": [],
+  "blockedDates": [],
+  "customProperties": {},
+  "crmObjectCreationStatus": "COMPLETE",
+  "type": "CONTACT_FLOW",
+  "objectTypeId": "0-1",
+  "suppressionListIds": [],
+  "canEnrollFromSalesforce": false
+}

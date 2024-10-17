@@ -1,0 +1,49 @@
+// Example action definition for creating a new deal and associating it with the enrolled contact
+{
+  "type": "SINGLE_CONNECTION",
+  "actionId": "2",
+  "actionTypeVersion": 0,
+  "actionTypeId": "0-14",
+  "connection": {
+    "edgeType": "STANDARD",
+    "nextActionId": "3"
+  },
+  "fields": {
+    "object_type_id": "0-3",
+    "properties": [
+      {
+        "targetProperty": "dealstage",
+        "value": {
+          "type": "STATIC_VALUE",
+          "staticValue": "appointmentscheduled"
+        }
+      },
+      {
+        "targetProperty": "dealname",
+        "value": {
+          "type": "STATIC_VALUE",
+          "staticValue": "New deal"
+        }
+      },
+      {
+        "targetProperty": "amount",
+        "value": {
+          "type": "STATIC_VALUE",
+          "staticValue": "1000"
+        }
+      }
+    ],
+    "associations": [
+        {
+        "target": {
+            "associationCategory": "HUBSPOT_DEFINED",
+            "associationTypeId": 3
+        },
+        "value": {
+            "type": "ENROLLED_OBJECT"
+        }
+        }
+    ],
+    "use_explicit_associations": "true"
+  }
+}

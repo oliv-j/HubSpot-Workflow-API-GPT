@@ -1,0 +1,65 @@
+// Example workflow response from GET request to /automations/v4/flows/585051946
+{
+  "id": "585051946",
+  "isEnabled": true,
+  "flowType": "WORKFLOW",
+  "revisionId": "7",
+  "name": "New form submission workflow",
+  "createdAt": "2024-06-07T17:27:08.101Z",
+  "updatedAt": "2024-06-07T17:31:11.263Z",
+  "startActionId": "1",
+  "nextAvailableActionId": "3",
+  "actions": [
+    {
+      "type": "SINGLE_CONNECTION",
+      "actionId": "1",
+      "actionTypeVersion": 0,
+      "actionTypeId": "0-13",
+      "connection": {
+        "edgeType": "STANDARD",
+        "nextActionId": "2"
+      },
+      "fields": {
+        "operation": "ADD",
+        "list_id": "178"
+      }
+    },
+    {
+      "type": "SINGLE_CONNECTION",
+      "actionId": "2",
+      "actionTypeVersion": 0,
+      "actionTypeId": "0-9",
+      "fields": {
+        "user_ids": [
+          "2620022"
+        ],
+        "delivery_method": "APP",
+        "subject": "New form submission",
+        "body": "Check out the new form submission we received!"
+      }
+    }
+  ],
+  "enrollmentCriteria": {
+    "shouldReEnroll": false,
+    "type": "EVENT_BASED",
+    "eventFilterBranches": [
+      {
+        "filterBranches": [],
+        "filters": [],
+        "eventTypeId": "4-1639801",
+        "operator": "HAS_COMPLETED",
+        "filterBranchType": "UNIFIED_EVENTS",
+        "filterBranchOperator": "AND"
+      }
+    ],
+    "listMembershipFilterBranches": []
+  },
+  "timeWindows": [],
+  "blockedDates": [],
+  "customProperties": {},
+  "crmObjectCreationStatus": "COMPLETE",
+  "type": "CONTACT_FLOW",
+  "objectTypeId": "0-1",
+  "suppressionListIds": [],
+  "canEnrollFromSalesforce": false
+}

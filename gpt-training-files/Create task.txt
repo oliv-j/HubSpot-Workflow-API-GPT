@@ -1,0 +1,25 @@
+// Example action definition for creating a new unassigned task
+{
+  "type": "SINGLE_CONNECTION",
+  "actionId": "1",
+  "actionTypeVersion": 0,
+  "actionTypeId": "0-3",
+  "fields": {
+    "task_type": "TODO",
+    "subject": "Check in with lead",
+    "body": "<p>Remember to sync up with new lead!</p>",
+    "associations": [
+        {
+        "target": {
+            "associationCategory": "HUBSPOT_DEFINED",
+            "associationTypeId": 10
+        },
+        "value": {
+            "type": "ENROLLED_OBJECT"
+        }
+        }
+    ],
+    "use_explicit_associations": "true",
+    "priority": "NONE"
+  }
+}

@@ -1,0 +1,29 @@
+// Example static branch action
+{
+  "actionId": "1",
+  "inputValue": {
+    "propertyName": "example_property"
+  },
+  "staticBranches": [
+    {
+      "branchValue": "example_value_1",
+      "connection": {
+        "edgeType": "STANDARD",
+        "nextActionId": "2"
+      }
+    },
+    {
+      "branchValue": "example_value_1",
+      "connection": {
+        "edgeType": "STANDARD",
+        "nextActionId": "3"
+      }
+    },
+    // ...
+  ],
+  "defaultBranchName": "Fall-through branch",
+  "defaultBranch": {
+    "edgeType": "STANDARD",
+    "nextActionId": "4"
+  }
+}

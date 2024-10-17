@@ -1,0 +1,20 @@
+// Example action to set the hs_lead_status property to IN_PROGRESS
+{
+  "actionId": "2",
+  "actionTypeVersion": 0,
+  "actionTypeId": "0-5",
+  "connection": {
+    "edgeType": "STANDARD",
+    "nextActionId": "4"
+  },
+  "fields": {
+    "property_name": "hs_lead_status",
+    "association": {
+      "associationCategory": "HUBSPOT_DEFINED",
+      "associationTypeId": 1
+    },
+    "value": {
+      "staticValue": "IN_PROGRESS"
+    }
+  }
+}

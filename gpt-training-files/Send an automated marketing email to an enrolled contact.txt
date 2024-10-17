@@ -1,0 +1,10 @@
+// Example action to send an automated marketing email to an enrolled contact
+{
+  "type": "SINGLE_CONNECTION",
+  "actionId": "4",
+  "actionTypeVersion": 0,
+  "actionTypeId": "0-4",
+  "fields": {
+    "content_id": "113782603056"
+  }
+}

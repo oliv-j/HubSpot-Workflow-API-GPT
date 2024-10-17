@@ -1,0 +1,16 @@
+// Example of an enrollmentCriteria definition to enroll contacts who submitted a form
+"enrollmentCriteria": {
+  "shouldReEnroll": true,
+  "type": "EVENT_BASED",
+  "eventFilterBranches": [
+    {
+      "filterBranches": [],
+      "filters": [],
+      "eventTypeId": "4-1639801",
+      "operator": "HAS_COMPLETED",
+      "filterBranchType": "UNIFIED_EVENTS",
+      "filterBranchOperator": "AND"
+    }
+  ],
+  "listMembershipFilterBranches": []
+}

@@ -1,0 +1,33 @@
+// Example of an enrollmentCriteria definition to filter contacts based on whether their city property is equal to 'Dublin'
+"enrollmentCriteria": {
+  "shouldReEnroll": false,
+  "type": "LIST_BASED",
+  "listFilterBranch": {
+    "filterBranches": [
+      {
+        "filterBranches": [],
+        "filters": [
+          {
+            "property": "city",
+            "operation": {
+              "operator": "IS_EQUAL_TO",
+              "includeObjectsWithNoValueSet": false,
+              "values": [
+                "Dublin"
+              ],
+              "operationType": "MULTISTRING"
+            },
+            "filterType": "PROPERTY"
+          }
+        ],
+        "filterBranchType": "AND",
+        "filterBranchOperator": "AND"
+      }
+    ],
+    "filters": [],
+    "filterBranchType": "OR",
+    "filterBranchOperator": "OR"
+  },
+  "unEnrollObjectsNotMeetingCriteria": false,
+  "reEnrollmentTriggersFilterBranches": []
+}

@@ -121,6 +121,8 @@ HubSpot-Workflow-API-GPT/
 ├── README.md
 ├── config/
 │   └── customGPT_config.txt
+├── gpt-training-files/
+│   └── json-workflow-examples.txt
 └── flows/
     ├── all_flows.txt
     └── all_flow_content.csv
@@ -129,21 +131,6 @@ HubSpot-Workflow-API-GPT/
 - **requirements.txt**: List of Python dependencies.
 - **config/customGPT_config.txt**: Configuration for the custom GPT model.
 - **flows/**: Directory to store workflow data and exports.
+- **gpt-training-files/**: Directory of json workflow code examples and related PDF of HubSpot API documentation.
 
-## Repository Structure
 
-```bash
-HubSpot-Workflow-API-GPT/
-├── export_flows_to_csv.py
-├── requirements.txt
-├── README.md
-├── config/
-│   └── customGPT_config.txt
-└── flows/
-    ├── all_flows.txt
-    └── all_flow_content.csv
-```
-- **export_flows_to_csv.py**: Python script to fetch and export HubSpot workflows.
-- **requirements.txt**: List of Python dependencies.
-- **config/customGPT_config.txt**: Configuration for the custom GPT model.
-- **flows/**: Directory to store workflow data and exports.

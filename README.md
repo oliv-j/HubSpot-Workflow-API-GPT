@@ -2,6 +2,7 @@
 
 ## Overview
 
+<<<<<<< HEAD
 **HubSpot-Workflow-API-GPT** is an experimental tool that attempts to analyze and manage HubSpot workflows. Leveraging the HubSpot Automation API v4, this repository provides scripts to fetch, process, and export workflow data, as well as a custom GPT model configuration tailored for in-depth analysis of HubSpot workflows.
 
 If you want to make structural changes to a mature HubSpot portal, you might need to know what properties or activities will trigger workflows.
@@ -120,6 +121,10 @@ Instructions: This GPT is designed to analyze HubSpot workflows. The user will p
 Upload the files in the 'gpt-training-files' directory to help train chatGPT to interpret the json code (that is returned by the API) so you can ask questions about your workflows and get meaningful reponses.
 
 If desired, you can also upload your workflow file 'all_flow_content.csv' to the backend so that you can use the o1 models (which at this time do not allow file uploads).
+=======
+### GPT Instructions:
+Instructions: This GPT is designed to analyze HubSpot workflows. The user will provide workflow documentation, JSON examples, and exports (such as CSV files) from a HubSpot portal, which contain workflow details. This GPT will interpret, understand, and explain these workflows with a detailed and technical approach. When the user provides a workflow name or ID, it will generate a summary followed by a detailed breakdown of the workflow's triggers, steps, branching logic, and actions. Additionally, users can ask about all workflows in the HubSpot portal to identify workflows triggered by specific conditions, or which perform certain actions (e.g., send an email or trigger based on a change in a field). The GPT will reference HubSpot API documentation and examples provided by the user. Responses will prioritize detailed technical explanations over simplicity to ensure the user has a full understanding of the workflow architecture and logic. Communication will be precise and formal.
+>>>>>>> 5a3ce08035b216115a0f118144bb49e15f8f919a
 
 #### Conversation Starters:
 - What does workflow XYZ do in HubSpot?
@@ -127,9 +132,12 @@ If desired, you can also upload your workflow file 'all_flow_content.csv' to the
 - Which workflows in HubSpot send emails?
 - Break down the steps and actions of workflow ABC.
 
+<<<<<<< HEAD
 ## Using your customGPT:
 If not already uploaded during configuration, upload the 'all_flow_content.csv' file to the interface (this approach requires use of the 4 or 4o models). You can then ask questions about the APIs to understand more about them. e.g. which ones send email, which ones are triggered by 'x' property.
 
+=======
+>>>>>>> 5a3ce08035b216115a0f118144bb49e15f8f919a
 ## Repository Structure
 
 ```bash
@@ -149,4 +157,9 @@ HubSpot-Workflow-API-GPT/
 - **requirements.txt**: List of Python dependencies.
 - **config/customGPT_config.txt**: Configuration for the custom GPT model.
 - **flows/**: Directory to store workflow data and exports.
+- **gpt-training-files/**: Directory of json workflow code examples and PDF of HubSpot web page for automation API documentation.- **gpt-training-files/**: Directory of json workflow code examples and PDF of HubSpot web page for automation API documentation.<<<<<<< HEAD
 - **gpt-training-files/**: Directory of json workflow code examples and PDF of HubSpot web page for automation API documentation.
+=======
+- **gpt-training-files/**: Directory of json workflow code examples and related PDF of HubSpot API documentation.
+
+>>>>>>> 5a3ce08035b216115a0f118144bb49e15f8f919a

@@ -157,9 +157,10 @@ HubSpot-Workflow-API-GPT/
 - **requirements.txt**: List of Python dependencies.
 - **config/customGPT_config.txt**: Configuration for the custom GPT model.
 - **flows/**: Directory to store workflow data and exports.
-- **gpt-training-files/**: Directory of json workflow code examples and PDF of HubSpot web page for automation API documentation.- **gpt-training-files/**: Directory of json workflow code examples and PDF of HubSpot web page for automation API documentation.<<<<<<< HEAD
+- **gpt-training-files/**: Directory of json workflow code examples and PDF of HubSpot web page for automation API documentation.<<<<<<< HEAD
 - **gpt-training-files/**: Directory of json workflow code examples and PDF of HubSpot web page for automation API documentation.
 =======
 - **gpt-training-files/**: Directory of json workflow code examples and related PDF of HubSpot API documentation.
+
 
 >>>>>>> 5a3ce08035b216115a0f118144bb49e15f8f919a

@@ -2,7 +2,6 @@
 
 ## Overview
 
-<<<<<<< HEAD
 **HubSpot-Workflow-API-GPT** is an experimental tool that attempts to analyze and manage HubSpot workflows. Leveraging the HubSpot Automation API v4, this repository provides scripts to fetch, process, and export workflow data, as well as a custom GPT model configuration tailored for in-depth analysis of HubSpot workflows.
 
 If you want to make structural changes to a mature HubSpot portal, you might need to know what properties or activities will trigger workflows.

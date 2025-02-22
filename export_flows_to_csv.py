@@ -13,6 +13,7 @@ SERVICE_NAME = "keychain-item-label"  # The name you used when storing the token
 USERNAME = "username"                # The username you used when storing the token
 OUTPUT_FILE = "~/Downloads/flows/all_flow_content.csv"
 
+
 # Retrieve the API token from the macOS Keychain using keyring
 API_TOKEN = keyring.get_password(SERVICE_NAME, USERNAME)
 
@@ -55,11 +56,13 @@ def fetch_all_flows():
         all_flows.extend(flows)
         print(f"Retrieved {len(flows)} flows from page {page}.")
 
-        if data.get("hasMore"):
-            after = data.get("offset")  # or 'after' depending on the API's response
+        # Check for next page
+        paging_info = data.get("paging", {})
+        if paging_info and paging_info.get("next", {}).get("after"):
+            after = paging_info["next"]["after"]
             page += 1
             # Optional: Sleep to respect rate limits
-            time.sleep(0.2)  # Adjust sleep duration as needed
+            time.sleep(0.05)  # Adjust sleep duration as needed
         else:
             print("All flows have been fetched.")
             break

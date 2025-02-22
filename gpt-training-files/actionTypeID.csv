@@ -1,0 +1,10 @@
+Action,actionTypeID, Description
+Delay until a specific date or date-based property,0-35,Delay until a preconfigured calendar date or date property of the enrolled record.
+"Delay a set amount of time until a specific day of the week or time of day.",0-1, "Delay for a preconfigured amount of time (e.g. 3-hours 5-days etc.) until a specific day (e.g. Tuesday) or time of day (12:00 AM EST).
+Add enrolled object to list or remove from list,0-13,Add or remove an enrolled contact to/from a static list.
+Send automated email to a contact associated with the enrolled record,0-4,Send an automated marketing email to the enrolled record.
+Send email notification to a user or team,0-8,Send an internal email notification to a user or team in your account.
+Send an in-app notification to a user or team,0-9,Trigger an in-app notification to a user or team in your account.
+Set property,0-5,Set a property on an enrolled object.
+Create task,0-3,Create a new task.
+Create a new record,0-14,Create a new record (e.g. contact company deal ticket or lead)."

@@ -1,159 +1,168 @@
-# HubSpot-Workflow-API-GPT
+# HubSpot Workflow API GPT
 
 ## Overview
 
-**HubSpot-Workflow-API-GPT** is an experimental tool that attempts to analyze and manage HubSpot workflows. Leveraging the HubSpot Automation API v4, this repository provides scripts to fetch, process, and export workflow data, as well as a custom GPT model configuration tailored for in-depth analysis of HubSpot workflows.
+This repository is now organized around the **HubSpot agent CLI** (`hubspot`) as the primary way to inspect HubSpot CRM data and automation workflows.
 
-If you want to make structural changes to a mature HubSpot portal, you might need to know what properties or activities will trigger workflows.
+The goal is to create a repeatable workflow for:
 
-A future evolution of this application would be to then use a customGPT to re-write workflows in order to accomodate data-structure changes in your account – which might otherwise require many hours/days of manual configuration via the UI.
+- verifying HubSpot agent CLI access
+- snapshotting workflow data from a portal
+- generating analysis-ready local artifacts
+- handing those artifacts to Codex or a custom GPT for workflow analysis
 
-## Features
+The existing Python exporter remains in the repo as a fallback path, but the default workflow is now CLI-first.
 
-- **Automated Workflow Retrieval**: Fetch all workflows from your HubSpot portal, handling pagination seamlessly.
-- **Detailed Data Export**: Export workflow details into structured CSV files for easy analysis.
-- **Secure Authentication**: Utilize macOS Keychain for secure storage and retrieval of HubSpot API tokens via the `keyring` library.
-- **Custom GPT Integration**: Analyze and interpret workflows with the integrated HubSpot Workflow Analyzer GPT.
-- **Comprehensive Documentation**: Detailed README and supporting documentation to guide setup and usage.
+## Which CLI is Which?
+
+There are two different HubSpot CLIs that may exist on the same machine:
+
+- `hubspot`: the newer **HubSpot agent CLI**
+- `hs`: the older HubSpot developer CLI
+
+This repo uses **`hubspot`** as the main interface.
+
+## Current Status
+
+In this environment, the HubSpot agent CLI is installed and can be used for CRM lookups. For example, `hubspot objects search` works for contact search.
+
+Workflow access is a separate permission boundary. A portal session can authenticate successfully and still fail `hubspot workflows list` with `403` if the auth context does not include the required scopes.
+
+That means this repo now assumes:
+
+- the agent CLI is present
+- read-only operations are preferred
+- workflow snapshotting depends on the authenticated user or token having workflow access
 
 ## Prerequisites
 
-- **macOS**: This tool is specifically designed for macOS environments.
-- **Homebrew**: Package manager for macOS to install Python and other dependencies.
-- **Python 3.7+**: Ensure Python is installed via Homebrew.
-- **Git**: To clone the repository.
-- **HubSpot API Access**: A HubSpot account with access to the Automation API v4 and necessary permissions.
+- macOS or another environment where the HubSpot agent CLI is installed
+- `hubspot` on `PATH`
+- Python 3.12 recommended
+- Git
+- HubSpot access with the read scopes needed for the commands you intend to run
 
-## Installation
+## Quick Start
 
-### 1. Install Homebrew (If Not Already Installed)
+### 1. Verify the agent CLI
 
-Homebrew is essential for managing packages on macOS.
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-### 2. Install Python via Homebrew
-Ensure Python is installed using Homebrew to manage dependencies effectively.
+Run the preflight script:
 
 ```bash
-brew install python
+./scripts/check-agent-cli.sh
 ```
 
-...and verify the installation:
+This checks:
+
+- `hubspot` is installed
+- the CLI can respond to `--version`
+- `hubspot whoami` works
+- workflow read access is available
+
+If workflow access is missing, the script will tell you instead of failing silently.
+
+### 2. Find a contact
 
 ```bash
-python3 --version
+./scripts/find-contact.sh oj@bson.uk
 ```
 
-### 3. Clone the Repository
-```bash
-git clone https://github.com/yourusername/HubSpot-Workflow-API-GPT.git
-cd HubSpot-Workflow-API-GPT
-```
+This uses the agent CLI directly and prints the matching contact record.
 
-### 4. Set Up a Virtual Environment
-It's recommended to use a virtual environment to manage dependencies.
+### 3. Snapshot workflows
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+./scripts/snapshot-workflows.sh
 ```
 
-### 5. Install Dependencies
-Install the required Python packages using `pip`.
+This command:
+
+- pages through `hubspot workflows list`
+- stores the workflow inventory as JSONL
+- fetches detailed workflow JSON for each workflow ID
+
+Generated outputs:
+
+- `flows/raw/workflows.jsonl`
+- `flows/raw/workflow-details/<flow-id>.json`
+
+If the authenticated session lacks workflow scopes, the script exits with a clear error and guidance.
+
+### 4. Build analysis reports
 
 ```bash
-pip install -r requirements.txt
+python3 ./scripts/build-workflow-report.py
 ```
 
-> **Note**: If you encounter permission issues during installation, ensure you're operating within the virtual environment.
+This reads the saved workflow detail files and produces:
 
-### 6. Configure Authentication
-Store your HubSpot API token securely using macOS Keychain.
+- `flows/reports/workflow-summary.csv`
+- `flows/reports/workflow-findings.md`
 
-#### a. Install `keyring`
-Ensure `keyring` is installed in your virtual environment.
+These outputs are designed to be easier for Codex or a custom GPT to reason over than raw workflow JSON alone.
 
-```bash
-pip install keyring
-```
+## Recommended Codex Workflow
 
-#### b. Store the API Token
-Run the following Python commands to store your API token securely:
+The intended workflow for this repo is:
 
-```python
-import keyring
+1. Run `./scripts/check-agent-cli.sh`
+2. Confirm workflow access is available
+3. Run `./scripts/snapshot-workflows.sh`
+4. Run `python3 ./scripts/build-workflow-report.py`
+5. Ask Codex questions against the local artifacts
 
-service_name = "keychain-item-name"
-username = "username"
-api_token = "your_actual_private_app_token_here"
+Examples:
 
-keyring.set_password(service_name, username, api_token)
-```
+- Which workflows send marketing emails?
+- Which workflows reference a given property?
+- Which workflows contain branches or delays?
+- Which workflows create tasks or records?
 
-## Usage
-
-### 1. Fetch and Export Workflows
-Run the Python script to fetch all workflows from your HubSpot portal and export them to a CSV file.
-
-```bash
-python export_flows_to_csv.py
-```
-
-Upon successful execution, the workflow data will be saved to `~/Downloads/flows/all_flow_content.csv`.
-
-### 2. Analyze Workflows with Custom GPT
-Utilize the integrated **HubSpot Workflow Analyzer GPT** to interpret and analyze your workflows. Provide workflow documentation, JSON examples, or CSV exports, and receive detailed technical explanations.
-
-### customGPT setup:
-
-#### Instructions
-Copy the instructions below and use them to configure a customGPT in your chatGPT account. You may need a paid account to configure customGPTs. You can tailor the instructions according to your needs.
-
-```bash
-Instructions: This GPT is designed to analyze HubSpot workflows. The user will provide workflow documentation, JSON examples, and exports (such as CSV files) from a HubSpot portal, which contain workflow details. This GPT will interpret, understand, and explain these workflows with a detailed and technical approach. When the user provides a workflow name or ID, it will generate a summary followed by a detailed breakdown of the workflow's triggers, steps, branching logic, and actions. Additionally, users can ask about all workflows in the HubSpot portal to identify workflows triggered by specific conditions, or which perform certain actions (e.g., send an email or trigger based on a change in a field). The GPT will reference HubSpot API documentation and examples provided by the user. Responses will prioritize detailed technical explanations over simplicity to ensure the user has a full understanding of the workflow architecture and logic. Communication will be precise and formal.
-```
-
-#### training files
-Upload the files in the 'gpt-training-files' directory to help train chatGPT to interpret the json code (that is returned by the API) so you can ask questions about your workflows and get meaningful reponses.
-
-If desired, you can also upload your workflow file 'all_flow_content.csv' to the backend so that you can use the o1 models (which at this time do not allow file uploads).
-=======
-### GPT Instructions:
-Instructions: This GPT is designed to analyze HubSpot workflows. The user will provide workflow documentation, JSON examples, and exports (such as CSV files) from a HubSpot portal, which contain workflow details. This GPT will interpret, understand, and explain these workflows with a detailed and technical approach. When the user provides a workflow name or ID, it will generate a summary followed by a detailed breakdown of the workflow's triggers, steps, branching logic, and actions. Additionally, users can ask about all workflows in the HubSpot portal to identify workflows triggered by specific conditions, or which perform certain actions (e.g., send an email or trigger based on a change in a field). The GPT will reference HubSpot API documentation and examples provided by the user. Responses will prioritize detailed technical explanations over simplicity to ensure the user has a full understanding of the workflow architecture and logic. Communication will be precise and formal.
->>>>>>> 5a3ce08035b216115a0f118144bb49e15f8f919a
-
-#### Conversation Starters:
-- What does workflow XYZ do in HubSpot?
-- Can you list all workflows triggered by X?
-- Which workflows in HubSpot send emails?
-- Break down the steps and actions of workflow ABC.
-
-<<<<<<< HEAD
-## Using your customGPT:
-If not already uploaded during configuration, upload the 'all_flow_content.csv' file to the interface (this approach requires use of the 4 or 4o models). You can then ask questions about the APIs to understand more about them. e.g. which ones send email, which ones are triggered by 'x' property.
-
-=======
->>>>>>> 5a3ce08035b216115a0f118144bb49e15f8f919a
-## Repository Structure
+## Repo Structure
 
 ```bash
 HubSpot-Workflow-API-GPT/
+├── README.md
 ├── export_flows_to_csv.py
 ├── requirements.txt
-├── README.md
 ├── config/
 │   └── customGPT_config.txt
-├── gpt-training-files/
-│   └── json-workflow-examples.txt
-└── flows/
-    ├── all_flows.txt
-    └── all_flow_content.csv
+├── scripts/
+│   ├── build-workflow-report.py
+│   ├── check-agent-cli.sh
+│   ├── find-contact.sh
+│   └── snapshot-workflows.sh
+├── flows/
+│   ├── all_flows.txt
+│   ├── all_flow_content.csv
+│   ├── raw/
+│   │   ├── workflows.jsonl
+│   │   └── workflow-details/
+│   └── reports/
+│       ├── workflow-findings.md
+│       └── workflow-summary.csv
+└── gpt-training-files/
 ```
-- **export_flows_to_csv.py**: Python script to fetch and export HubSpot workflows.
-- **requirements.txt**: List of Python dependencies.
-- **config/customGPT_config.txt**: Configuration for the custom GPT model.
-- **flows/**: Directory to store workflow data and exports.
-- **gpt-training-files/**: Directory of json workflow code examples and PDF of the HubSpot web page detailing automation API documentation.
+
+## Fallback Python Exporter
+
+The legacy exporter is still available:
+
+```bash
+python3 export_flows_to_csv.py
+```
+
+Use it only if you specifically want the original Python-based export flow. The preferred path for this repo is the HubSpot agent CLI.
+
+## Custom GPT / Codex Context
+
+The files in `gpt-training-files/` remain useful as reference material for workflow structure and HubSpot automation concepts.
+
+For day-to-day analysis, the higher-value inputs are now:
+
+- `flows/raw/workflows.jsonl`
+- `flows/raw/workflow-details/*.json`
+- `flows/reports/workflow-summary.csv`
+- `flows/reports/workflow-findings.md`
+
+The config in `config/customGPT_config.txt` can be used as a starting point for a custom GPT, but it should be paired with the current CLI-generated artifacts rather than only the static training files.

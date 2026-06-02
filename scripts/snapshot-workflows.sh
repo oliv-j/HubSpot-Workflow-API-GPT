@@ -2,6 +2,13 @@
 
 set -euo pipefail
 
+HUBSPOT_ENV="${HUBSPOT_ENV:-sb}"
+case "$HUBSPOT_ENV" in
+  sb) HUBSPOT_CMD="${HUBSPOT_CMD:-hubspot-sb}" ;;
+  prod) HUBSPOT_CMD="${HUBSPOT_CMD:-hubspot-prod}" ;;
+  *) echo "error: HUBSPOT_ENV must be 'sb' or 'prod'" >&2; exit 1 ;;
+esac
+
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 RAW_DIR="$ROOT_DIR/flows/raw"
 DETAIL_DIR="$RAW_DIR/workflow-details"
@@ -11,8 +18,8 @@ LIMIT="${HUBSPOT_WORKFLOW_LIMIT:-100}"
 
 mkdir -p "$RAW_DIR" "$DETAIL_DIR" "$REPORT_DIR"
 
-if ! command -v hubspot >/dev/null 2>&1; then
-  echo "error: hubspot was not found on PATH" >&2
+if ! command -v "$HUBSPOT_CMD" >/dev/null 2>&1; then
+  echo "error: $HUBSPOT_CMD was not found on PATH" >&2
   exit 1
 fi
 
@@ -20,6 +27,9 @@ if ! command -v python3 >/dev/null 2>&1; then
   echo "error: python3 is required for JSON parsing in this script" >&2
   exit 1
 fi
+
+echo "hubspot environment: $HUBSPOT_ENV"
+"$HUBSPOT_CMD" whoami >&2
 
 extract_jsonl_and_cursor() {
   local source_file="$1"
@@ -102,9 +112,9 @@ while true; do
   page_stderr="$(mktemp)"
 
   if [ -n "$after" ]; then
-    hubspot workflows list --limit "$LIMIT" --after "$after" --format json >"$page_file" 2>"$page_stderr" || true
+    "$HUBSPOT_CMD" workflows list --limit "$LIMIT" --after "$after" --format json >"$page_file" 2>"$page_stderr" || true
   else
-    hubspot workflows list --limit "$LIMIT" --format json >"$page_file" 2>"$page_stderr" || true
+    "$HUBSPOT_CMD" workflows list --limit "$LIMIT" --format json >"$page_file" 2>"$page_stderr" || true
   fi
 
   if [ -s "$page_stderr" ]; then
@@ -120,7 +130,7 @@ while true; do
   page_status=$?
   if [ $page_status -ne 0 ]; then
     printf '%s\n' "$page_output" >&2
-    echo "hint: run './scripts/check-agent-cli.sh' and verify workflow scopes are present" >&2
+    echo "hint: run 'HUBSPOT_ENV=$HUBSPOT_ENV ./scripts/check-agent-cli.sh' and verify workflow scopes are present" >&2
     exit $page_status
   fi
 
@@ -163,7 +173,7 @@ chunk_size=50
 for ((i = 0; i < ${#flow_ids[@]}; i += chunk_size)); do
   chunk=("${flow_ids[@]:i:chunk_size}")
   detail_file="$(mktemp)"
-  hubspot workflows get "${chunk[@]}" --format jsonl >"$detail_file"
+  "$HUBSPOT_CMD" workflows get "${chunk[@]}" --format jsonl >"$detail_file"
   save_detail_files "$detail_file" "$DETAIL_DIR"
 done
 
